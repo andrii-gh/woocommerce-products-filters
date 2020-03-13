@@ -1,0 +1,449 @@
+.pwpf-widget-products-filter-title {
+    width: max-content;
+    box-sizing: border-box;
+}
+
+.pwpf-widget-products-filter-title_theme-default {
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 0.05em;
+    color: rgb(119, 119, 119);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.pwpf-widget-products-filter-title_theme-default:after {
+    margin-top: 0.2em;
+    content: '';
+    display: block;
+    height: 2px;
+    width: 101%;
+    background-color: #649225;
+    margin-bottom: 0.5em;
+}
+
+.irs-grid-text {
+    font-size: 10px;
+    color: #428bca;
+    bottom: -3px;
+}
+
+
+.pwpf-accordion__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.pwpf-accordion__title-switcher {
+    width: 15px;
+    display: flex;
+}
+
+.pwpf-accordion__title-text {
+    position: relative;
+}
+
+.pwpf-accordion__title-text:after {
+    content: '';
+    display: flex;
+    width: 100%;
+    height: 2px;
+    bottom: 0.2em;
+    background-color: rgb(100, 146, 37);
+    position: absolute;
+}
+
+.pwpf-accordion__title-switcher_theme-default > svg > path {
+    fill: rgb(100, 146, 37);
+}
+
+.pwpf-widget-products-filter-checkbox__item-title {
+    order: 2;
+}
+
+.pwpf-widget-products-filter-checkbox__item.pwpf-widget-products-filter-checkbox__item_theme-default {
+}
+
+.pwpf-widget-products-filter-checkbox__item {
+    display: flex;
+    align-items: center;
+}
+
+.pwpf-widget-products-filter-checkbox__item-field {
+    display: none !important;
+}
+
+.pwpf-widget-products-filter-checkbox__item-icon {
+    width: 1.45em;
+    height: 1.45em;
+    display: flex;
+    margin-right: .4em;
+    position: relative;
+}
+
+.pwpf-widget-products-filter-checkbox__item-icon_theme-default {
+    font-size: 13px;
+    border-color: rgb(119, 119, 119);
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.pwpf-widget-products-filter-checkbox {
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.pwpf-widget-products-filter-checkbox__item-title_theme-default {
+    font-weight: normal;
+    color: rgb(119, 119, 119);
+}
+
+
+input:checked + .pwpf-widget-products-filter-checkbox__item-title_theme-default {
+    font-weight: bold;
+    color: rgb(100, 146, 37);
+}
+
+input:checked + .pwpf-widget-products-filter-checkbox__item-title_theme-default + .pwpf-widget-products-filter-checkbox__item-icon_theme-default:after {
+    content: '';
+    width: 22px;
+    position: absolute;
+    height: 2px;
+    background-color: rgb(110, 146, 37);
+    top: calc(50% - 5px);
+    left: calc(50% + 6px);
+    transform: translateX(-50%) translateY(-50%) rotate(-55deg);
+}
+
+input:checked + .pwpf-widget-products-filter-checkbox__item-title_theme-default + .pwpf-widget-products-filter-checkbox__item-icon_theme-default:before {
+    content: '';
+    width: 8px;
+    position: absolute;
+    height: 2px;
+    background-color: rgb(110, 146, 37);
+    top: calc(50% - -1px);
+    left: calc(50% - 2px);
+    transform: translateX(-50%) translateY(-50%) rotate(55deg);
+}
+
+
+input:checked:disabled + .pwpf-widget-products-filter-checkbox__item-title_theme-default {
+    opacity: 0.5;
+}
+
+input:checked:disabled + .pwpf-widget-products-filter-checkbox__item-title_theme-default + .pwpf-widget-products-filter-checkbox__item-icon_theme-default {
+    opacity: 0.5;
+}
+
+input:disabled + .pwpf-widget-products-filter-checkbox__item-title_theme-default + .pwpf-widget-products-filter-checkbox__item-icon_theme-default {
+    opacity: 0.5;
+}
+
+input:disabled + .pwpf-widget-products-filter-checkbox__item-title_theme-default {
+    opacity: 0.5;
+}
+
+.pwpf-accordion__title-text_theme-default {
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 0.05em;
+    color: rgb(119, 119, 119);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.pwpf-accordion_theme-default {
+    border-width: 2px;
+    border-color: rgb(119, 119, 119);
+    /*! border-style: solid; */
+}
+
+.pwpf-accordion__title_theme-default {
+    border-top: 2px solid white;
+    box-shadow: rgb(221, 221, 221) 0 0 0 1px;
+    border-bottom: 2px solid white;
+}
+
+.pwpf-accordion__title_theme-default:hover {
+    border-bottom: 2px solid rgb(100, 146, 37);
+}
+
+.pwpf-accordion__title_theme-default[data-pwpf-expander-status="expanded"] {
+    border-bottom: 2px solid rgb(100, 146, 37);
+}
+
+.pwpf-accordion {
+}
+
+.pwpf-accordion__title-text::after {
+    display: none;
+}
+
+.pwpf-widget-products-filter-checkbox {
+    padding: 0;
+    margin: 0 !important;
+}
+
+.pwpf-widget-products-filter-checkbox_theme-default {
+    background-color: rgba(110, 146, 37, 0.02);
+    box-shadow: rgb(221, 221, 221) 0 0 10px;
+    /*border-top: 2px solid rgb(110, 146, 37);*/
+}
+
+.pwpf-widget-products-filter-checkbox__item {
+    margin: 0 !important;
+    padding: 6px 15px;
+}
+
+.pwpf-widget-products-filter-checkbox__item_theme-default:hover {
+}
+
+.pwpf-widget-products-filter-checkbox__item-icon {
+    margin-right: .6em;
+}
+
+.pwpf-accordion__title {
+    position: relative;
+    z-index: 4;
+}
+
+.pwpf-widget-products-filter-checkbox {
+    position: relative;
+    z-index: 1;
+}
+
+.pwpf-widget-products-filter-checkbox:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 15px;
+}
+
+.pwpf-widget-products-filter-checkbox:after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 15px;
+}
+
+.pwpf-accordion__title_theme-default {
+    background-color: white;
+}
+
+.pwpf-widget-products-filter-checkbox__item_theme-default:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.pwpf-accordion__title_theme-default[data-pwpf-expander-switcher] {
+    cursor: pointer;
+}
+
+.pwpf-widget-products-filter-checkbox_theme-default {
+    max-height: 999px;
+    overflow: scroll;
+}
+
+.pwpf-widget-products-filter-checkbox_theme-default {
+    transition: max-height 600ms ease-out;
+    overflow: hidden;
+}
+
+.pwpf-widget-products-filter-checkbox_theme-default[data-pwpf-expander-status="collapsed"] {
+    max-height: 0;
+}
+
+[data-pwpf-expander-status="expanded"] > .pwpf-accordion__title-switcher_theme-default {
+    transform: rotate(180deg);
+}
+
+.pwpf-accordion__title-switcher_theme-default {
+    transition: transform 250ms ease-out;
+}
+
+.pwpf-widget-products-filter-checkbox__item_theme-default {
+    cursor: pointer;
+}
+
+.pwpf-accordion + .pwpf-accordion {
+    margin-top: 20px;
+}
+
+
+.pwpf-widget-filters-actions {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.pwpf-widget-filters-actions__action_type_1.pwpf-widget-filters-actions__action_theme-default {
+    background-color: rgb(100, 146, 37);
+    color: rgba(255, 255, 255);
+    cursor: pointer;
+    transition: box-shadow 300ms ease;
+}
+
+.pwpf-widget-filters-actions__action {
+    padding: .4em 1.2em;
+    box-sizing: border-box;
+    width: 50%;
+    max-width: calc(50% - 0.3em);
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pwpf-widget-filters-actions__action_type_2.pwpf-widget-filters-actions__action_theme-default {
+    background-color: rgb(223, 91, 3);
+    color: white;
+    cursor: pointer;
+    transition: box-shadow 300ms ease;
+}
+
+.pwpf-widget-filters-actions__action.pwpf-widget-filters-actions__action_type_2.pwpf-widget-filters-actions__action_theme-default:hover {
+    color: #fff;
+    box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.2);
+}
+
+.pwpf-widget-filters-actions__action_type_1.pwpf-widget-filters-actions__action_theme-default:hover {
+    box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.2);
+}
+
+
+.pwpf-element-loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    top: 0;
+    display: flex;
+}
+
+.pwpf-element-loading_theme-default {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+
+.pwpf-element-loading__content {
+    background-color: rgb(100, 146, 37);
+    color: white;
+    margin-bottom: 20px;
+}
+
+.pwpf-element-loading__content_theme-default {
+    font-size: 16px;
+}
+
+.pwpf-element-loading__content {
+    display: flex;
+    height: max-content;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: .5em 2em;
+}
+
+.pwpf-element-loading {
+    display: flex;
+    align-items: center;
+    bottom: 0;
+    height: max-content;
+    top: initial;
+    width: max-content;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pwpf-element-loading_theme-default {
+    background-color: transparent;
+}
+
+
+.pwpf-element-loading-content__preloader_theme-default:after {
+    content: '';
+    display: block;
+    width: 1em;
+    height: 1em;
+    border-bottom: 2px solid white;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    margin: auto;
+    z-index: 2;
+    animation: pwpf-animation-spin 1s infinite linear;
+    box-sizing: border-box;
+    position: absolute;
+    right: initial;
+    bottom: initial;
+}
+
+.pwpf-element-loading__content_theme-default {
+    border-width: 2px;
+    border-style: solid;
+    font-size: 17px;
+    border-color: white;
+}
+
+.pwpf-element-loading__content {
+    padding: .5em 1.5em;
+    display: flex;
+    align-items: center;
+}
+
+.pwpf-element-loading-content__preloader {
+    position: relative;
+    overflow: visible;
+    height: 1em;
+    width: 1em;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    border-radius: 50%;
+}
+
+.pwpf-element-loading-content__text {
+    margin-left: 1em;
+}
+
+.pwpf-element-loading-content__text_theme-default {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    animation: pwpf-animation-blink 1s infinite ease-in-out;
+    will-change: opacity;
+}
+
+.pwpf-widget-products-filter-range_theme-default[data-pwpf-filters-loading="true"] {
+    opacity: 0.5;
+}
+
+body[data-pwpf-filters-loading="true"] .shop-container {
+    opacity: 0.2 !important;
+}
+
+.shop-container {
+    opacity: 1;
+    transition: opacity 300ms ease;
+    will-change: opacity;
+}
+
+@keyframes pwpf-animation-spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pwpf-animation-blink {
+    0% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+}

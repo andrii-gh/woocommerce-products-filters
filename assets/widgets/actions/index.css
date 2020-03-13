@@ -1,0 +1,47 @@
+.pwpf-widget-filters-actions {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.pwpf-widget-filters-actions__action_type_1.pwpf-widget-filters-actions__action_theme-default {
+    background-color: rgb(30, 115, 190);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: box-shadow 300ms ease;
+    border-radius: 2em 0 0 2em;
+}
+
+.pwpf-widget-filters-actions__action {
+    padding: .4em 1.2em;
+    box-sizing: border-box;
+    width: 50%;
+    max-width: calc(50% - 0.2em);
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pwpf-widget-filters-actions__action_type_2.pwpf-widget-filters-actions__action_theme-default {
+    background-color: #CC0D38;
+    color: white;
+    cursor: pointer;
+    transition: box-shadow 300ms ease;
+    border-radius: 0 2em 2em 0;
+}
+
+.pwpf-widget-filters-actions__action.pwpf-widget-filters-actions__action_type_2.pwpf-widget-filters-actions__action_theme-default:hover {
+    color: #fff;
+    box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.2);
+}
+
+.pwpf-widget-filters-actions__action_type_1.pwpf-widget-filters-actions__action_theme-default:hover {
+    box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.2);
+}
+
+.pwpf-widget-filters-actions__action_theme-default {
+    font-weight: 500;
+    letter-spacing: .1em;
+}

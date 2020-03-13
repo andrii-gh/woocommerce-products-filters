@@ -1,0 +1,55 @@
+.pwpf-admin-widget {
+    margin-bottom: 15px;
+}
+
+.pwpf-admin-widget-item-title {
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.pwpf-admin-widget-item-title_theme_pwpf {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pwpf-admin-widget-label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.pwpf-admin-widget-input-text {
+    width: 100%;
+    display: flex;
+}
+
+.pwpf-admin-widget-input-text_type_normal {
+    border: 1px solid #d0d0d0;
+    padding: 8px 8px;
+    display: inline-block;
+}
+
+.pwpf-widget-products-filter-checkbox__item-field {
+    display: none !important;
+}
+
+.pwpf-widget-products-filter-checkbox__item-icon {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    display: flex;
+}
+
+.pwpf-widget-products-filter-checkbox__item-icon_theme-default {
+    border-color: gray;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.pwpf-widget-products-filter-checkbox__item {
+    display: flex;
+}
+
+.pwpf-accordion__title_theme-default[data-pwpf-expander-switcher] {
+    cursor: pointer;
+}

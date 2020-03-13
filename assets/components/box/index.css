@@ -1,0 +1,49 @@
+.pwpf-el-box[data-pwpf-expander-status="expanded"]::before,
+.pwpf-el-box[data-pwpf-expander-status="expanded"]::after {
+    content: '';
+    width: 100%;
+    height: 2rem;
+    display: block;
+}
+
+.pwpf-el-box {
+    margin: 0;
+    padding: 0 1em;
+    position: relative;
+    z-index: 1;
+}
+
+.pwpf-el-box_theme-default {
+    top: 0;
+    overflow: hidden;
+    max-height: initial;
+    background-color: white;
+    box-shadow: rgb(221, 221, 221) 0 0 .5em;
+    opacity: 1;
+}
+
+.pwpf-el-box_theme-default {
+    max-height: initial;
+    overflow: scroll;
+    opacity: 1;
+    top: 0;
+}
+
+.pwpf-el-box_theme-default {
+    overflow: hidden;
+}
+
+.pwpf-el-box_theme-default[data-pwpf-expander-status="expanded"] {
+    transition: opacity 200ms ease-in, top 200ms ease-in;
+}
+
+.pwpf-el-box_theme-default[data-pwpf-expander-status="collapsed"] {
+    max-height: 0;
+
+    opacity: 0;
+    top: -25%;
+
+    transition: opacity 100ms ease-in,
+    top 100ms ease-in,
+    max-height 100ms ease-in;
+}
