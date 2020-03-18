@@ -2,6 +2,10 @@
 
 namespace Plugin\Woocommerce_Products_Filters;
 
+use Monolog\Handler\FirePHPHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
 class Builder {
 	public function init() {
 		add_action(
@@ -16,13 +20,15 @@ class Builder {
 		}
 
 		add_action(
-			'wp_footer',
+			'wp',
 			[ $this, 'build' ]
 		);
 	}
 
 	public function build() {
-		$this->build_db_structure();
+//		$this->build_db_structure();
+
+		require_once get_stylesheet_directory() . '/includes/composer/vendor/autoload.php';
 
 		global $wpdb;
 
@@ -44,28 +50,35 @@ class Builder {
 
 		wp_suspend_cache_addition( true );
 
+		$logger = new Logger( 'build-products-attributes' );
+
+		$logger->pushHandler( new StreamHandler( get_stylesheet_directory() . '/logs/build-attributes-ru.log', Logger::INFO ) );
+		$logger->pushHandler( new FirePHPHandler() );
+
 		$paged = 0;
 		while ( true ) {
 			$paged ++;
-			dump( $paged );
+			$logger->info( "Paged: $paged" );
 
 			$args           = [
 				'post_type'      => 'product',
-				'lang'           => '',
+				'post_status'    => 'publish',
+				'lang'           => 'ru',
 				'posts_per_page' => 100,
 				'paged'          => $paged,
 			];
 			$products_posts = get_posts( $args );
 
 			if ( empty( $products_posts ) ) {
-				dump( 'break' );
+				$logger->info( "Break. Empty posts" );
+
 				break;
 			}
 
 			foreach ( $products_posts as $product_post ) {
 				$product            = wc_get_product( $product_post );
 				$product_id         = $product_post->ID;
-				$product_lang       = pll_get_post_language( $product_post );
+				$product_lang       = pll_get_post_language( $product_post->ID );
 				$product_attributes = $product->get_attributes();
 
 				foreach ( $product_attributes as $product_attribute ) {
@@ -75,14 +88,7 @@ class Builder {
 					$is_taxonomy  = $attribute_data['is_taxonomy'];
 
 					if ( empty( $is_taxonomy ) ) {
-						dump( str_repeat( '-', 20 ) );
-
-						dump( "Error!" );
-						dump( "Attribute is not Taxonomy" );
-						dump( $product_id );
-						dump( $attribute_data );
-
-						dump( str_repeat( '-', 20 ) );
+						$logger->error( "Attribute is not Taxonomy $product_id:$attribute_id" );
 
 						continue;
 					}
@@ -99,6 +105,8 @@ class Builder {
 					);
 
 					if ( empty( $options ) ) {
+						$logger->warning( "Empty options" );
+
 						continue;
 					}
 
@@ -208,7 +216,10 @@ class Builder {
 					}
 				}
 			}
+
+			$logger->info( 'Complete Posts', wp_list_pluck( $products_posts, 'post_title' ) );
 		}
+		exit;
 	}
 
 	public function build_db_structure() {

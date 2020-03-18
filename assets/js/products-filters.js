@@ -7,6 +7,13 @@ jQuery(function ($) {
         initRangeSliders();
         initCheckboxes();
         initActions();
+        initOrderBy();
+    }
+
+    function initOrderBy() {
+        const selector = getOrderBySelector();
+
+        $(document).on('change', selector, onChangeOrderBy);
     }
 
     function initRangeSliders() {
@@ -115,11 +122,14 @@ jQuery(function ($) {
         const action = pluginSettings['action-filter'];
 
         const filterData = collectFiltersData();
+        const filterExtraData = collectFilterExtraData();
 
         const data = {
             'action': action,
             'data': {
                 'page': filterOptions['page'],
+                'lang': pluginSettings['lang'],
+                'orderby': filterExtraData['orderby'],
                 'attributes': filterData,
             }
         };
@@ -174,6 +184,14 @@ jQuery(function ($) {
             });
         });
 
+        const productsContainer = getProductsContainer();
+        productsContainer.addClass('--pwpf-is-loading');
+
+        $(document).trigger(pluginSettings.triggers['loading']);
+        if (!pluginSettings['show-loading-template']) {
+            return;
+        }
+
         const loadingTemplate = `
             <div
                 data-pwpf-filters-preloader="true"
@@ -186,9 +204,6 @@ jQuery(function ($) {
                     </div>
             </div>
         `;
-
-        const productsContainer = getProductsContainer();
-        productsContainer.addClass('--pwpf-is-loading');
 
         $('body')
             .data('pwpf-is-filtering', true)
@@ -219,6 +234,8 @@ jQuery(function ($) {
         $('body')
             .data('pwpf-is-filtering', false)
             .removeAttr('data-pwpf-filters-loading', 'true');
+
+        $(document).trigger(pluginSettings.triggers['complete']);
     }
 
     function collectFiltersData() {
@@ -238,6 +255,14 @@ jQuery(function ($) {
         });
 
         return filtersData;
+    }
+
+    function collectFilterExtraData() {
+        const $orderBy = getOrderByElement();
+
+        return {
+            'orderby': $orderBy.find('option:selected').val()
+        };
     }
 
     function collectSliderOptionsFilterData(filtersGroups) {
@@ -408,5 +433,20 @@ jQuery(function ($) {
         const containerSelector = pluginSettings['items-container-selector'];
 
         return $(containerSelector);
+    }
+
+    function getOrderByElement() {
+        const selector = pluginSettings['orderby-selector'];
+
+        return $(selector);
+    }
+
+    function getOrderBySelector() {
+        return pluginSettings['orderby-selector'];
+    }
+
+    function onChangeOrderBy(event) {
+        event.preventDefault();
+        filter();
     }
 });

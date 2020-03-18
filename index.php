@@ -9,8 +9,6 @@ Text Domain: plugin-woocommerce-products-filters
 Domain Path: /languages/
 */
 
-
-
 function plugin_woocommerce_products_filters_run() {
 	require_once 'includes/class-autoloader.php';
 	$autoloader = new \Plugin\Woocommerce_Products_Filters\Autoloader();

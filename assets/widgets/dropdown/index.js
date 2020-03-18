@@ -31,7 +31,8 @@ jQuery(function ($) {
             'action': action,
             'data': {
                 'value-to-search': search,
-                'attribute-id': attributeId
+                'attribute-id': attributeId,
+                'lang': pluginSettings['lang']
             }
         };
 

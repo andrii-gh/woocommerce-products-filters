@@ -187,12 +187,21 @@ class Hooks {
 		wp_localize_script(
 			Enqueue::get_plugin_script_name( 'products-filters' ),
 			'PluginWooCommerceProductsFiltersData',
-			[
-				'ajax-url'                 => admin_url( 'admin-ajax.php' ),
-				'action-filter'            => 'plugin_woocommerce_products_filters_filter_products',
-				'loading-text'             => Translator::esc_html_x( 'Loading', 'Frontend' ),
-				'items-container-selector' => Hook::apply_filters( 'items_container_css_selector', '' ),
-			]
+			Hook::apply_filters( 'products-filters-frontend-args',
+				[
+					'orderby-selector'         => '',
+					'ajax-url'                 => admin_url( 'admin-ajax.php' ),
+					'action-filter'            => 'plugin_woocommerce_products_filters_filter_products',
+					'show-loading-template'    => true,
+					'loading-text'             => Translator::esc_html_x( 'Loading', 'Frontend' ),
+					'items-container-selector' => Hook::apply_filters( 'items_container_css_selector', '' ),
+					'lang'                     => pll_current_language(),
+					'triggers'                 => [
+						'loading'  => 'pwpf/loading',
+						'complete' => 'pwpf/complete'
+					]
+				]
+			)
 		);
 
 		wp_register_script(
@@ -237,7 +246,8 @@ class Hooks {
 			Enqueue::get_plugin_script_name( 'widget-dropdown' ),
 			'pluginWoocommerceProductsFiltersWidgetDropdown',
 			[
-				'widgetName'         => Data::$widget_prefix . 'checkbox',
+				'widgetName'         => Data::$widget_prefix . 'dropdown',
+				'lang'               => pll_current_language(),
 				'ajax-url'           => admin_url( 'admin-ajax.php' ),
 				'action-suggestions' => 'plugin_woocommerce_products_filters_attribute_values_suggestions',
 			]

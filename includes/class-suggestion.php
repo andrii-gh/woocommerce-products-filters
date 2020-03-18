@@ -6,6 +6,11 @@ class Suggestion {
 	public function suggest( $args ) {
 		global $wpdb;
 
+		$lang         = $args['data']['lang'];
+
+		$lang_term    = get_term_by( 'slug', $lang, 'language', ARRAY_A );
+		$lang_term_id = $lang_term['term_id'];
+
 		$search_query = $args['data']['value-to-search'];
 		$attribute_id = $args['data']['attribute-id'];
 
@@ -13,6 +18,7 @@ class Suggestion {
 
 		$wp_table_prefix = $wpdb->prefix;
 
+		$term_relationship_table         = $wp_table_prefix . 'term_relationships';
 		$products_attributes_options     = $wp_table_prefix . Data::$db_table_prefix . 'products_attributes_options';
 		$attributes_options_table        = $wp_table_prefix . Data::$db_table_prefix . 'attributes_options';
 		$attributes_options_values_table = $wp_table_prefix . Data::$db_table_prefix . 'attributes_options_values';
@@ -20,7 +26,6 @@ class Suggestion {
 		$values_words_table              = $wp_table_prefix . Data::$db_table_prefix . 'values_words';
 		$words_table                     = $wp_table_prefix . Data::$db_table_prefix . 'words';
 		$posts_table                     = $wp_table_prefix . 'posts';
-
 
 		$table_index              = 0;
 		$values_words_join_pieces = array_map(
@@ -33,7 +38,6 @@ class Suggestion {
 			$words
 		);
 		$values_words_join        = implode( ' ', $values_words_join_pieces );
-
 
 		$table_index                    = 0;
 		$values_words_words_join_pieces = array_map(
@@ -78,11 +82,15 @@ class Suggestion {
 						
 			            	JOIN $attributes_options_values_table aov ON v.id = aov.value_id
 		                	JOIN $attributes_options_table ao ON aov.attribute_option_id = ao.id
+		                	
+		                	JOIN $term_relationship_table trlang ON ao.option_id = trlang.object_id
 		
 		                  JOIN $products_attributes_options pao ON pao.attribute_option_id = ao.id
 		                  JOIN $posts_table p ON pao.product_id = p.ID
 						WHERE 
-							ao.attribute_id = %d AND ( $words_where )
+							ao.attribute_id = %d AND
+							trlang.term_taxonomy_id = $lang_term_id AND
+							( $words_where )
 						GROUP BY v.value, ao.option_id
 				        ORDER BY v.value
 				        LIMIT %d;

@@ -6,7 +6,7 @@ class Filter {
 	public function init() {
 		add_filter( 'posts_join', [ $this, 'filter_posts_join' ], 10, 2 );
 		add_filter( 'posts_where', [ $this, 'filter_posts_where' ], 10, 2 );
-		add_filter( 'posts_request', [ $this, 'filter_posts_request' ], 10, 2 );
+		add_filter( 'posts_request', [ $this, 'filter_posts_request' ], 99999, 2 );
 		add_action( 'pre_get_posts', [ $this, 'action_pre_get_posts' ], 10, 2 );
 
 		add_filter(
@@ -40,8 +40,12 @@ class Filter {
 			$query->query_vars['plugin_wpf_filter'] = $query_vars['plugin_wpf_filter'];
 		}
 
+		$query->query_vars['lang'] = '';
+
+		return $query;
+
 		if ( ! empty( $query_vars['lang'] ) ) {
-			$query->query_vars['lang'] = 'ru';
+			$query->query_vars['lang'] = '';
 		}
 
 		return $query;
@@ -73,8 +77,9 @@ class Filter {
 					case 'checkbox':
 					{
 						$products_attributes_options_alias = "pao_$table_index";
+						$products_attributes_options_alias = "pao_$table_index";
 						$attributes_option_alias           = "ao_$table_index";
-						$posts_alias = $wpdb->posts;
+						$posts_alias                       = $wpdb->posts;
 
 						return "
 							JOIN $products_attributes_options_table $products_attributes_options_alias ON $posts_alias.ID = $products_attributes_options_alias.product_id
@@ -97,6 +102,14 @@ class Filter {
 		$join .= " $attributes_values_join";
 
 		return $join;
+	}
+
+	public function filter_request( $request ) {
+		if ( ! isset( $wp_query->query_vars['plugin_wpf_filter'] ) ) {
+			return $request;
+		}
+
+		return $request;
 	}
 
 	public function filter_posts_join_checkbox( $table_index ) {
@@ -152,7 +165,7 @@ class Filter {
 					case 'dropdown':
 					case 'checkbox':
 					{
-						$attributes_options_alias          = "ao_$table_index";
+						$attributes_options_alias = "ao_$table_index";
 
 						$options          = $filter_data_item['options'];
 						$options_ids      = array_column( $options, 'id' );
@@ -296,35 +309,60 @@ class Filter {
 		$products_per_page = apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
 		$products_per_page = Hook::apply_filters( 'filter_products_per_page', $products_per_page );
 
-		return Hook::apply_filters(
-			'filter_query_query_vars',
-			[
-//				'post_type'         => 'product',
-				'status'            => 'publish',
-				'limit'             => $products_per_page,
-				'page'              => $page,
-				'plugin_wpf_filter' => $filter_data,
-				'lang'              => 'ru',
-				'orderby'           => 'rating',
-				'paginate'          => true
-//				'order'             => 'ASC',
-//				'meta_key'          => '_price',
-			]
-		);
+		$product_types = array_keys( wc_get_product_types() );
+
+//		dump( $product_types );
+//		exit;
+
+		$ordering_args = [
+			'orderby' => 'date',
+			'order'   => 'desc',
+		];
+		if ( isset( $args['orderby'] ) || ! ( empty( $args['orderby'] ) ) ) {
+			switch ( $args['orderby'] ) {
+				case 'price-desc':
+					$ordering_args['orderby'] = 'price';
+					$ordering_args['order']   = 'desc';
+
+					break;
+				default:
+					$ordering_args['orderby'] = $args['orderby'];
+					$ordering_args['order']   = 'asc';
+			}
+		}
+
+		return [
+			'wc-args'       => Hook::apply_filters(
+				'filter_query_vars',
+				[
+					'post_type'         => 'product',
+					'type'              => $product_types,
+					'status'            => 'publish',
+					'limit'             => $products_per_page,
+					'page'              => $page,
+					'plugin_wpf_filter' => $filter_data,
+					'lang'              => $args['lang'],
+					'paginate'          => true,
+				]
+			),
+			'ordering-args' => $ordering_args,
+		];
 	}
 
 	public function get_products( $args ) {
-		$query_args = $this->parse_filters_args( $args );
+		$filters_args  = $this->parse_filters_args( $args );
+		$wc_args       = $filters_args['wc-args'];
+		$ordering_args = $filters_args['ordering-args'];
 
-//		global $test_wc_request;
-//
-//		wc_get_products( $query_args );
-//		dump( $test_wc_request );
-//		exit;
+		$query = new \WC_Query();
+
+		$query->get_catalog_ordering_args( $ordering_args['orderby'], $ordering_args['order'] );
+		$products = wc_get_products( $wc_args );
+		$query->remove_ordering_args();
 
 		return [
-			'wc-products' => wc_get_products( $query_args ),
-			'args'        => $query_args,
+			'wc-products' => $products,
+			'args'        => $wc_args,
 		];
 	}
 }

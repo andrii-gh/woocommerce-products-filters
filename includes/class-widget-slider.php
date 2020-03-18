@@ -26,13 +26,25 @@ class Widget_Slider extends \WP_Widget {
 	public function widget( $args, $widget_data ) {
 		global $wpdb;
 
-		$wp_table_prefix                                   = $wpdb->prefix;
-		$attributes_values_numeric_table_name              = Data::$db_table_prefix . 'attributes_values_numeric';
-		$prefixed_products_attributes_values_table_numeric = $wp_table_prefix . $attributes_values_numeric_table_name;
+		$wp_table_prefix                 = $wpdb->prefix;
+		$numbers_table                   = $wp_table_prefix . Data::$db_table_prefix . 'numbers';
+		$values_numbers_table            = $wp_table_prefix . Data::$db_table_prefix . 'values_numbers';
+		$values_table                    = $wp_table_prefix . Data::$db_table_prefix . 'values';
+		$attributes_options_values_table = $wp_table_prefix . Data::$db_table_prefix . 'attributes_options_values';
+		$attributes_options_table        = $wp_table_prefix . Data::$db_table_prefix . 'attributes_options';
 
 		$min_max_query_results = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT MIN(value) as min_value, MAX(value) as max_value FROM $prefixed_products_attributes_values_table_numeric WHERE `attribute_id` = %d",
+				"
+						SELECT MIN(n.value) as min_value, MAX(n.value) as max_value
+							FROM $numbers_table n
+								JOIN $values_numbers_table vn ON n.id = vn.number_id
+								JOIN $values_table v ON vn.value_id = v.id
+								JOIN $attributes_options_values_table aov ON v.id = aov.value_id
+								JOIN $attributes_options_table ao ON aov.attribute_option_id = ao.id
+							WHERE ao.`attribute_id` = %d
+							",
+
 				$widget_data['attribute-id']
 			)
 		);

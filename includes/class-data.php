@@ -17,11 +17,11 @@ class Data {
 	public static $options_prefix;
 
 	static function init() {
-		self::$assets_version = '1.0.903';
+		self::$assets_version = '1.0.912';
 
 		self::$text_domain = 'plugin-woocommerce-products-filters';
 
-		self::$hook_prefix   = 'plugin_woocommerce_products_filters_';
+		self::$hook_prefix   = 'pwpf/';
 		self::$widget_prefix = 'plugin_woocommerce_products_filters_widget_';
 
 		self::$plugin_path = dirname( __FILE__, 2 );
