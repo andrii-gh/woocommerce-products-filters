@@ -15,9 +15,15 @@ class Builder {
 	}
 
 	public function hooks() {
+		return;
+
 		if ( ! isset( $_GET['plugin-wpf-build'] ) ) {
 			return;
 		}
+
+		add_action( 'wp', [ $this, 'normalize_numeric_attributes' ] );
+
+		return;
 
 		add_action(
 			'wp',
@@ -220,6 +226,43 @@ class Builder {
 			$logger->info( 'Complete Posts', wp_list_pluck( $products_posts, 'post_title' ) );
 		}
 		exit;
+	}
+
+	public function normalize_numeric_attributes() {
+		$taxonomies = [
+			'pa_ves'
+		];
+
+		foreach ( $taxonomies as $taxonomy ) {
+			$terms = get_terms(
+				[
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => true,
+					'lang'       => 'uk',
+				]
+			);
+
+			$new_terms = [];
+			foreach ( $terms as $term ) {
+
+				$value = $term->name;
+
+				$value = str_replace('/\s+/', '', $value);
+
+				$value = str_replace( ',', '', $value );
+				$value = str_replace( '.', '', $value );
+
+				$value = preg_replace( $pattern = '/^0/', '', $value );
+
+				$new_terms[] = $value;
+			}
+
+			dump( wp_list_pluck( $terms, 'name' ) );
+			dump( '---' );
+			dump( $new_terms );
+
+			exit;
+		}
 	}
 
 	public function build_db_structure() {

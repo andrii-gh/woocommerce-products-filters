@@ -64,9 +64,10 @@ class Filter {
 		$products_attributes_options_table = $wp_table_prefix . Data::$db_table_prefix . 'products_attributes_options';
 		$attributes_options_table          = $wp_table_prefix . Data::$db_table_prefix . 'attributes_options';
 
+
 		$table_index = 0;
 		$join_pieces = array_map(
-			function ( $filter_data_item ) use ( &$table_index, $products_attributes_options_table, $attributes_options_table ) {
+			function ( $filter_data_item ) use ( &$table_index, $products_attributes_options_table, $attributes_options_table, $wp_table_prefix ) {
 				global $wpdb;
 
 				$type = $filter_data_item['type'];
@@ -76,7 +77,6 @@ class Filter {
 					case 'dropdown':
 					case 'checkbox':
 					{
-						$products_attributes_options_alias = "pao_$table_index";
 						$products_attributes_options_alias = "pao_$table_index";
 						$attributes_option_alias           = "ao_$table_index";
 						$posts_alias                       = $wpdb->posts;
@@ -88,7 +88,28 @@ class Filter {
 					}
 					case 'slider':
 					{
-						return $this->filter_posts_join_slider( $table_index );
+						$attributes_options_values_table = $wp_table_prefix . Data::$db_table_prefix . 'attributes_options_values';
+						$values_table                    = $wp_table_prefix . Data::$db_table_prefix . 'values';
+						$values_numbers_table            = $wp_table_prefix . Data::$db_table_prefix . 'values_numbers';
+						$numbers_table                   = $wp_table_prefix . Data::$db_table_prefix . 'numbers';
+
+						$posts_alias = $wpdb->posts;
+
+						$products_attributes_options_alias = "pao_$table_index";
+						$attributes_option_alias           = "ao_$table_index";
+						$attributes_options_values_alias   = "aov_$table_index";
+						$values_alias                      = "v_$table_index";
+						$values_numbers_alias              = "vn_$table_index";
+						$numbers_alias                     = "n_$table_index";
+
+						return "
+							JOIN $products_attributes_options_table $products_attributes_options_alias ON $posts_alias.ID = $products_attributes_options_alias.product_id
+							JOIN $attributes_options_table $attributes_option_alias ON $products_attributes_options_alias.attribute_option_id = $attributes_option_alias.id
+							JOIN $attributes_options_values_table $attributes_options_values_alias ON $attributes_option_alias.id = $attributes_options_values_alias.attribute_option_id
+							JOIN $values_table $values_alias ON $attributes_options_values_alias.value_id = $values_alias.id
+							JOIN $values_numbers_table $values_numbers_alias ON $values_alias.id = $values_numbers_alias.value_id
+							JOIN $numbers_table $numbers_alias ON $values_numbers_alias.number_id = $numbers_alias.id
+							";
 					}
 				}
 
@@ -137,13 +158,13 @@ class Filter {
 	public function filter_posts_join_slider( $table_index ) {
 		global $wpdb;
 
-		$wp_table_prefix                                   = $wpdb->prefix;
-		$attributes_values_numeric_table_name              = Data::$db_table_prefix . 'attributes_values_numeric';
-		$prefixed_products_attributes_values_table_numeric = $wp_table_prefix . $attributes_values_numeric_table_name;
+		$wp_table_prefix               = $wpdb->prefix;
+		$attributes_numbers_table_name = Data::$db_table_prefix . 'attributes_values';
+		$attributes_numbers_table_name = $wp_table_prefix . $attributes_numbers_table_name;
 
-		$products_attributes_table_numeric_alias = "ppatv_$table_index";
+		$alias = "ppatv_$table_index";
 
-		return "JOIN $prefixed_products_attributes_values_table_numeric as $products_attributes_table_numeric_alias ON $products_attributes_table_numeric_alias.product_id = {$wpdb->posts}.ID";
+		return "JOIN $attributes_numbers_table_name as $alias ON $alias.product_id = {$wpdb->posts}.ID";
 	}
 
 	public function filter_posts_where( $where, $wp_query ) {
@@ -163,8 +184,7 @@ class Filter {
 
 				switch ( $type ) {
 					case 'dropdown':
-					case 'checkbox':
-					{
+					case 'checkbox':{
 						$attributes_options_alias = "ao_$table_index";
 
 						$options          = $filter_data_item['options'];
@@ -186,7 +206,25 @@ class Filter {
 					}
 					case 'slider':
 					{
-						return $this->filter_posts_where_slider( $filter_data_item, $table_index );
+						$posts_alias = $wpdb->posts;
+
+						$products_attributes_options_alias = "pao_$table_index";
+						$attributes_options_alias           = "ao_$table_index";
+						$attributes_options_values_alias   = "aov_$table_index";
+						$values_alias                      = "v_$table_index";
+						$values_numbers_alias              = "vn_$table_index";
+						$numbers_alias                     = "n_$table_index";
+
+						$options = $filter_data_item['options'];
+						$min     = $options['min'];
+						$max     = $options['max'];
+
+						return $wpdb->prepare(
+							"($attributes_options_alias.attribute_id = %d AND ($numbers_alias.value BETWEEN %d AND %d) )",
+							$filter_data_item['attribute-id'],
+							$min,
+							$max
+						);
 					}
 				}
 			},

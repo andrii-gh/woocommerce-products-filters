@@ -1,3 +1,8 @@
+.pwpf-el-slider {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
 .pwpf-el-slider * {
     transition: none !important;
 }
